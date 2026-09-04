@@ -61,7 +61,7 @@
 只要做一次的設定：
 
 ```bash
-git clone https://github.com/<帳號>/iso-cert-radar.git
+git clone https://github.com/robinaudi/iso-cert-radar.git
 cd iso-cert-radar
 ```
 
