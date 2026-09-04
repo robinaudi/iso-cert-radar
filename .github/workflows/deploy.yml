@@ -1,0 +1,60 @@
+# 「部署」— 只要 main 有新的 commit，就自動把網站更新上線。
+#
+# 這是 CD（Continuous Deployment，持續部署）的部分：
+# PR 被合併進 main 的那一刻，這支就會跑，大約一分鐘後線上就是新版。
+# 沒有人需要手動上傳檔案 — 這正是 CI/CD 想解決的事。
+
+name: 部署到 GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 給這個流程發布 Pages 所需的權限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時只跑一個部署；新的 push 進來時不中斷正在跑的那個
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # 部署前再檢查一次資料 — 就算有人繞過 PR 直接推 main，壞資料也上不了線
+  validate:
+    name: 部署前先驗證資料
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/validate.mjs
+
+  deploy:
+    name: 發布網站
+    needs: validate          # 上面那關沒過，這關就不會跑
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 取得程式碼
+        uses: actions/checkout@v4
+
+      - name: 設定 Pages
+        uses: actions/configure-pages@v5
+
+      # 這是純靜態網站，沒有 build 步驟 — 整個資料夾直接打包上傳
+      - name: 打包網站檔案
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: 部署
+        id: deployment
+        uses: actions/deploy-pages@v4

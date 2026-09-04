@@ -1,0 +1,11 @@
+{
+  "name": "iso-cert-radar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "資安證照課程雷達 — ISO 27001/27701/27017/42001 稽核員培訓開課清單",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "validate": "node scripts/validate.mjs",
+    "test": "node scripts/validate.mjs"
+  }
+}

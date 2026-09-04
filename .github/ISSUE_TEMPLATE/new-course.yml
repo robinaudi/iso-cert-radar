@@ -1,0 +1,78 @@
+name: 新增課程梯次
+description: 看到一梯還沒收錄的課？填這張表就好，不用自己動手改資料
+title: "[新增] "
+labels: ["新增課程"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        知道多少填多少，不確定的欄位留白沒關係。
+
+  - type: input
+    id: title
+    attributes:
+      label: 課程名稱
+      placeholder: 資訊安全管理系統內部稽核員訓練課程
+    validations:
+      required: true
+
+  - type: input
+    id: org
+    attributes:
+      label: 主辦單位
+      placeholder: 財團法人中國生產力中心 CPC
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: 報名頁網址
+      description: 沒有公開報名頁的話寫「需洽業務窗口」
+    validations:
+      required: true
+
+  - type: input
+    id: dates
+    attributes:
+      label: 開課日期
+      placeholder: 2026-12-15 到 2026-12-16
+    validations:
+      required: true
+
+  - type: dropdown
+    id: when
+    attributes:
+      label: 上課時段
+      options:
+        - 平日（要請假）
+        - 假日（六日）
+        - 待確認
+    validations:
+      required: true
+
+  - type: input
+    id: price
+    attributes:
+      label: 價格
+      placeholder: 早鳥 8,550；三人團報 8,100／人
+
+  - type: dropdown
+    id: cert
+    attributes:
+      label: 發什麼證書
+      description: 這是最重要的一欄 — 不確定就選「待確認」，不要猜
+      options:
+        - 待確認
+        - IRCA/CQI 國際登錄證照
+        - ISO 稽核員證書（訓練或驗證機構核發）
+        - 個資管理師證照
+        - 只有結業證書，不發證照
+    validations:
+      required: true
+
+  - type: textarea
+    id: note
+    attributes:
+      label: 其他要注意的
+      placeholder: 報名資格限制、報名截止日、有沒有前置課程要求⋯
