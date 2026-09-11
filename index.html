@@ -32,6 +32,9 @@
 
   * { box-sizing: border-box; }
 
+  /* .wrap / .gate 自己有 display，沒有這行 hidden 屬性會失效 */
+  [hidden] { display: none !important; }
+
   body {
     margin: 0;
     background: var(--ground);
@@ -451,6 +454,231 @@
   .empty { padding: 40px 0; text-align: center; color: var(--ink-3); font-size: 14px; }
   .empty.error { color: var(--crit); }
 
+  /* ---------- gate：沒登入／沒被授權時看到的 hello 頁 ---------- */
+
+  .gate {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 48px 20px;
+    background:
+      radial-gradient(900px 520px at 88% 12%, var(--accent-soft), transparent 62%),
+      radial-gradient(700px 480px at 0% 100%, #E3E9E2, transparent 60%),
+      var(--ground);
+  }
+
+  .gate-card {
+    width: min(980px, 100%);
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .gate-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 5px 12px 5px 10px;
+  }
+
+  .gate-eyebrow .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 0 3px var(--ok-soft);
+  }
+
+  .gate-hello {
+    margin: 22px 0 0;
+    font-size: clamp(72px, 13vw, 144px);
+    line-height: .9;
+    letter-spacing: -0.06em;
+    font-weight: 760;
+    color: var(--ink);
+  }
+
+  .gate-hello .period { color: var(--accent); }
+
+  .gate-name {
+    display: block;
+    margin-top: 14px;
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    color: var(--ink-2);
+    overflow-wrap: anywhere;
+  }
+
+  .gate-lede {
+    margin: 24px 0 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-2);
+    max-width: 40ch;
+  }
+
+  .gate-lede b { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
+
+  .gate-actions { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .gate-actions:empty { display: none; }
+
+  .btn {
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform .15s, border-color .15s, box-shadow .15s;
+  }
+
+  .btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .btn:disabled { opacity: .6; cursor: default; transform: none; }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn.ghost { background: transparent; box-shadow: none; border-style: dashed; color: var(--ink-2); font-weight: 500; }
+  .btn svg { width: 19px; height: 19px; flex: none; }
+
+  .gate-msg { margin: 16px 0 0; min-height: 1.6em; font-size: 13.5px; color: var(--ink-2); }
+  .gate-msg.ok { color: var(--ok); }
+  .gate-msg.err { color: var(--crit); }
+
+  .gate-foot {
+    margin-top: 44px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line-strong);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .04em;
+    color: var(--ink-3);
+    max-width: 44ch;
+  }
+
+  .radar { position: relative; width: 100%; max-width: 380px; aspect-ratio: 1; justify-self: center; }
+  .radar svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .radar-sweep {
+    position: absolute;
+    inset: 1%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0deg 280deg, rgba(27, 78, 72, .04) 300deg, rgba(27, 78, 72, .34) 360deg);
+    animation: radar-sweep 6s linear infinite;
+  }
+
+  .radar .blip { opacity: .3; animation: radar-blip 6s ease-out infinite; }
+
+  @keyframes radar-sweep { to { transform: rotate(360deg); } }
+  @keyframes radar-blip { 0% { opacity: 1; } 45% { opacity: .3; } 100% { opacity: .3; } }
+
+  /* ---------- 登入後：右上角身分列 ---------- */
+
+  .who { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 12px; }
+  .who-chip { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--ink-2); overflow-wrap: anywhere; }
+  .who-chip img { width: 22px; height: 22px; border-radius: 50%; }
+
+  .linkbtn {
+    font: inherit;
+    font-size: 12.5px;
+    color: var(--accent);
+    background: none;
+    border: 0;
+    border-bottom: 1px dotted currentColor;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .linkbtn:hover { opacity: .75; }
+  .linkbtn.danger { color: var(--crit); }
+  .linkbtn:disabled { opacity: .5; cursor: default; }
+
+  /* ---------- 管理面板（只有管理員看得到）---------- */
+
+  .admin {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+  }
+
+  .admin-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+  .admin-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
+  .admin-head span { font-size: 12.5px; color: var(--ink-3); }
+  .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+
+  .admin h3 {
+    margin: 0 0 8px;
+    font-size: 11.5px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .admin ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+
+  .admin li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    min-width: 0;
+  }
+
+  .admin li.none { background: none; border-style: dashed; color: var(--ink-3); font-size: 13px; }
+  .admin .em { font-family: var(--mono); font-size: 12.5px; overflow-wrap: anywhere; min-width: 0; }
+  .admin .sub { display: block; font-family: var(--sans); font-size: 12px; color: var(--ink-3); }
+  .admin .acts { display: flex; gap: 12px; flex: none; }
+
+  .admin form { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+  .admin input {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    font-size: 13.5px;
+    padding: 7px 10px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+  }
+
+  .admin input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .admin-msg { margin: 0; min-height: 1.4em; font-size: 12.5px; color: var(--ink-2); }
+  .admin-msg.err { color: var(--crit); }
+
+  @media (max-width: 760px) {
+    .gate { place-items: start center; }
+    .gate-card { grid-template-columns: 1fr; gap: 20px; }
+    .radar { order: -1; max-width: 180px; justify-self: start; }
+    .who { justify-content: flex-start; }
+  }
+
   @media (max-width: 720px) {
     .row { grid-template-columns: 1fr; gap: 12px; }
     .row-side { align-items: center; text-align: left; flex-direction: row; flex-wrap: wrap; }
@@ -464,7 +692,39 @@
 </head>
 <body>
 
-<div class="wrap">
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div>
+      <span class="gate-eyebrow"><span class="dot"></span>ISO Cert Radar · Members only</span>
+      <h1 class="gate-hello">Hello<span class="period">.</span><span class="gate-name" id="gate-name" hidden></span></h1>
+      <p class="gate-lede" id="gate-lede">確認身分中…</p>
+      <div class="gate-actions" id="gate-actions"></div>
+      <p class="gate-msg" id="gate-msg" role="status"></p>
+      <p class="gate-foot">資安證照課程雷達 — 受邀成員共同維護的開課清單</p>
+    </div>
+
+    <div class="radar" aria-hidden="true">
+      <svg viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="98" fill="#FFFFFF" stroke="#B9C3BC"/>
+        <circle cx="100" cy="100" r="74" stroke="#D5DCD6"/>
+        <circle cx="100" cy="100" r="50" stroke="#D5DCD6"/>
+        <circle cx="100" cy="100" r="26" stroke="#D5DCD6"/>
+        <path d="M100 4v192M4 100h192" stroke="#D5DCD6" stroke-dasharray="2 3"/>
+      </svg>
+      <div class="radar-sweep"></div>
+      <svg viewBox="0 0 200 200" fill="none">
+        <!-- 每個光點的 delay = 方位角 / 360 × 6s，掃描線掃過的那一刻才亮 -->
+        <circle class="blip" cx="147.5" cy="60.1" r="4" fill="#1B4E48" style="animation-delay: .83s"/>
+        <circle class="blip" cx="123" cy="132.8" r="3" fill="#2C6446" style="animation-delay: 2.42s"/>
+        <circle class="blip" cx="26.7" cy="126.7" r="3.5" fill="#9E5D0C" style="animation-delay: 4.17s"/>
+        <circle class="blip" cx="82" cy="78.6" r="2.5" fill="#1B4E48" style="animation-delay: 5.33s"/>
+        <circle cx="100" cy="100" r="3" fill="#141E1C"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="app" hidden>
 
   <header class="masthead">
     <div class="masthead-top">
@@ -472,7 +732,11 @@
         <h1>資安證照課程雷達</h1>
         <p class="subtitle">ISO 27001／27701／27017・27018／42001 與個資管理的稽核員培訓開課清單。每天打開看一眼，別讓早鳥價和報名截止日溜掉。</p>
       </div>
-      <div class="stamp">今天 <b id="today">—</b></div>
+      <div class="who">
+        <span class="who-chip"><img id="who-img" alt="" referrerpolicy="no-referrer" hidden><span id="who-name">—</span></span>
+        <button class="linkbtn" id="logout" type="button">登出</button>
+        <div class="stamp">今天 <b id="today">—</b></div>
+      </div>
     </div>
 
     <div class="kpis">
@@ -503,6 +767,28 @@
       </div>
     </div>
   </header>
+
+  <section class="admin" id="admin" hidden>
+    <div class="admin-head">
+      <h2>成員管理</h2>
+      <span>只有管理員看得到這一區。名單一改就生效，對方重新整理即可。</span>
+    </div>
+    <div class="admin-grid">
+      <div>
+        <h3>已授權・<span id="acl-count">—</span></h3>
+        <ul id="acl-list"></ul>
+        <form id="acl-add">
+          <input type="email" id="acl-email" placeholder="輸入要開通的 Gmail" autocomplete="off" required>
+          <button class="chip" type="submit">加入</button>
+        </form>
+      </div>
+      <div>
+        <h3>申請中・<span id="req-count">—</span></h3>
+        <ul id="req-list"></ul>
+      </div>
+    </div>
+    <p class="admin-msg" id="admin-msg" role="status"></p>
+  </section>
 
   <div class="contribute">
     <span>📝 <b>發現新梯次或資料有錯？</b>這頁的內容全部來自 <code>data/courses.json</code>，改那個檔就會改到這頁。</span>
@@ -751,32 +1037,302 @@
     }
   })();
 
-  fetch("data/courses.json", { cache: "no-store" })
-    .then(r => {
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      return r.json();
-    })
-    .then(payload => {
-      COURSES = payload.courses;
-      if (payload.meta && payload.meta.updated) {
-        document.getElementById("data-updated").textContent = payload.meta.updated;
-      }
-      COURSES.forEach(c => {
-        c.startD = parse(c.start);
-        c.endD = parse(c.end);
-        c.deadlineD = c.deadline ? parse(c.deadline) : null;
-        c.dStart = daysTo(c.startD);
-        c.dDeadline = c.deadlineD ? daysTo(c.deadlineD) : null;
-        c.past = daysTo(c.endD) < 0;
-        c.certLv = certOf(c);
+  // 登入並確認有權限之後，才由下面的登入模組呼叫
+  function loadCourses() {
+    fetch("data/courses.json", { cache: "no-store" })
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(payload => {
+        COURSES = payload.courses;
+        if (payload.meta && payload.meta.updated) {
+          document.getElementById("data-updated").textContent = payload.meta.updated;
+        }
+        COURSES.forEach(c => {
+          c.startD = parse(c.start);
+          c.endD = parse(c.end);
+          c.deadlineD = c.deadline ? parse(c.deadline) : null;
+          c.dStart = daysTo(c.startD);
+          c.dDeadline = c.deadlineD ? daysTo(c.deadlineD) : null;
+          c.past = daysTo(c.endD) < 0;
+          c.certLv = certOf(c);
+        });
+        COURSES.sort((a, b) => a.startD - b.startD);
+        renderKpis();
+        render();
+      })
+      .catch(err => {
+        listEl.innerHTML = `<p class="empty error">課程資料載入失敗（${esc(err.message)}）。<br>如果你是直接用 file:// 打開這個檔，瀏覽器會擋住讀取 JSON — 請改用 <code>npm start</code> 或看線上版。</p>`;
       });
-      COURSES.sort((a, b) => a.startD - b.startD);
-      renderKpis();
-      render();
-    })
-    .catch(err => {
-      listEl.innerHTML = `<p class="empty error">課程資料載入失敗（${esc(err.message)}）。<br>如果你是直接用 file:// 打開這個檔，瀏覽器會擋住讀取 JSON — 請改用 <code>npm start</code> 或看線上版。</p>`;
+  }
+</script>
+
+<script type="module">
+  // ---- Google 登入＋白名單 ----
+  // 誰進得來由 Firestore 規則決定（hrai-lumen-v5 的 cert_radar/acl），不是這段程式碼；
+  // 下面的 Web 設定是公開識別碼，不是密鑰。
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, deleteDoc, getDocs, collection, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-lite.js";
+
+  const app = initializeApp({
+    apiKey: "AIzaSyA-BzaDhcuA5ERez5gAY0tShvqTT_H6_xE",
+    authDomain: "hrai-lumen-v5.firebaseapp.com",
+    projectId: "hrai-lumen-v5",
+    appId: "1:18755746966:web:4203fe1f9cea84c4ead6b7",
+  });
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const $ = id => document.getElementById(id);
+  const h = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const errText = e => e.code || e.message;
+
+  const G_ICON = `<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
+
+  function button(html, cls, onClick) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = `btn ${cls}`.trim();
+    b.innerHTML = html;
+    b.addEventListener("click", onClick);
+    return b;
+  }
+
+  function say(text, tone = "") {
+    $("gate-msg").textContent = text;
+    $("gate-msg").className = `gate-msg ${tone}`.trim();
+  }
+
+  function showGate({ name = "", lede, actions = [] }) {
+    $("gate-name").textContent = name;
+    $("gate-name").hidden = !name;
+    $("gate-lede").innerHTML = lede;
+    $("gate-actions").replaceChildren(...actions);
+    $("app").hidden = true;
+    $("gate").hidden = false;
+  }
+
+  async function login() {
+    say("");
+    try {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+    } catch (e) {
+      if (e.code === "auth/popup-closed-by-user" || e.code === "auth/cancelled-popup-request") return;
+      say(e.code === "auth/popup-blocked"
+        ? "瀏覽器擋住了登入視窗 — 請允許這個網站開啟彈出視窗，再按一次。"
+        : `登入沒有成功（${errText(e)}）`, "err");
+    }
+  }
+
+  // 規則放行＝讀得到；permission-denied＝沒權限；其他錯誤（斷網等）往上丟
+  async function canRead(id) {
+    try {
+      await getDoc(doc(db, "cert_radar", id));
+      return true;
+    } catch (e) {
+      if (e.code === "permission-denied") return false;
+      throw e;
+    }
+  }
+
+  onAuthStateChanged(auth, async u => {
+    say("");
+    if (!u) {
+      showGate({
+        lede: "這是一份受邀制的資安證照開課清單。<br>請用 Google 帳號登入。",
+        actions: [button(`${G_ICON}<span>使用 Google 登入</span>`, "", login)],
+      });
+      return;
+    }
+
+    const name = u.displayName || u.email;
+    showGate({ name, lede: "確認權限中…" });
+    try {
+      const isAdmin = await canRead("acl");
+      if (isAdmin || await canRead("gate")) enterApp(u, isAdmin);
+      else showDenied(u, name);
+    } catch (e) {
+      showGate({
+        name,
+        lede: "暫時連不上伺服器，請稍後再試。",
+        actions: [button("重新整理", "", () => location.reload())],
+      });
+      say(errText(e), "err");
+    }
+  });
+
+  function showDenied(u, name) {
+    const ask = button("申請存取", "primary", async () => {
+      ask.disabled = true;
+      try {
+        await setDoc(doc(db, "cert_radar_requests", u.uid), {
+          email: u.email,
+          name: (u.displayName || "").slice(0, 100),
+          requestedAt: serverTimestamp(),
+        });
+        ask.textContent = "已送出申請";
+        say("收到了。管理員開通之後，重新整理這一頁就能進來。", "ok");
+      } catch (e) {
+        ask.disabled = false;
+        say(`申請沒有送出（${errText(e)}）`, "err");
+      }
     });
+
+    showGate({
+      name,
+      lede: `你登入的是 <b>${h(u.email)}</b>，<br>這個帳號還沒有被授權。`,
+      actions: [ask, button("換個帳號", "ghost", () => signOut(auth))],
+    });
+  }
+
+  let started = false;
+
+  function enterApp(u, isAdmin) {
+    $("who-name").textContent = u.email;
+    if (u.photoURL) {
+      $("who-img").src = u.photoURL;
+      $("who-img").hidden = false;
+    }
+    $("gate").hidden = true;
+    $("app").hidden = false;
+    if (!started) {
+      started = true;
+      loadCourses();
+    }
+    $("admin").hidden = !isAdmin;
+    if (isAdmin) refreshAdmin();
+  }
+
+  // 登出後整頁重載，確保畫面上不殘留課程資料
+  $("logout").addEventListener("click", () => signOut(auth).then(() => location.reload()));
+
+  // ---- 管理面板 ----
+
+  let members = [];
+
+  function adminSay(text, isErr = false) {
+    $("admin-msg").textContent = text;
+    $("admin-msg").className = `admin-msg${isErr ? " err" : ""}`;
+  }
+
+  function item(html, acts = [], cls = "") {
+    const li = document.createElement("li");
+    if (cls) li.className = cls;
+    li.innerHTML = html;
+    if (acts.length) {
+      const box = document.createElement("span");
+      box.className = "acts";
+      box.append(...acts);
+      li.append(box);
+    }
+    return li;
+  }
+
+  function linkButton(label, cls, onClick) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = `linkbtn ${cls}`.trim();
+    b.textContent = label;
+    b.addEventListener("click", onClick);
+    return b;
+  }
+
+  async function saveMembers(next) {
+    await setDoc(doc(db, "cert_radar", "acl"), { members: next, updatedAt: serverTimestamp() });
+    members = next;
+  }
+
+  async function refreshAdmin() {
+    try {
+      const snap = await getDoc(doc(db, "cert_radar", "acl"));
+      members = (snap.exists() && snap.data().members) || [];
+      const reqs = (await getDocs(collection(db, "cert_radar_requests"))).docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .filter(r => !members.includes(String(r.email).toLowerCase()));
+      renderAdmin(reqs);
+    } catch (e) {
+      adminSay(`讀取名單失敗（${errText(e)}）`, true);
+    }
+  }
+
+  function renderAdmin(reqs) {
+    $("acl-count").textContent = members.length;
+    $("req-count").textContent = reqs.length;
+
+    const acl = $("acl-list");
+    acl.replaceChildren();
+    if (!members.length) acl.append(item("還沒有任何成員", [], "none"));
+    members.forEach(email => {
+      // 按兩下才移除，避免誤觸；3 秒沒按第二下就復原
+      const rm = linkButton("移除", "danger", async () => {
+        if (rm.dataset.armed !== "1") {
+          rm.dataset.armed = "1";
+          rm.textContent = "確定移除？";
+          setTimeout(() => { rm.dataset.armed = ""; rm.textContent = "移除"; }, 3000);
+          return;
+        }
+        rm.disabled = true;
+        try {
+          await saveMembers(members.filter(m => m !== email));
+          adminSay(`已移除 ${email}`);
+          refreshAdmin();
+        } catch (e) {
+          rm.disabled = false;
+          adminSay(`移除失敗（${errText(e)}）`, true);
+        }
+      });
+      acl.append(item(`<span class="em">${h(email)}</span>`, [rm]));
+    });
+
+    const req = $("req-list");
+    req.replaceChildren();
+    if (!reqs.length) req.append(item("目前沒有人申請", [], "none"));
+    reqs.forEach(r => {
+      const ok = linkButton("核准", "", async () => {
+        ok.disabled = true;
+        try {
+          await saveMembers([...new Set([...members, String(r.email).toLowerCase()])]);
+          await deleteDoc(doc(db, "cert_radar_requests", r.id));
+          adminSay(`已開通 ${r.email}`);
+          refreshAdmin();
+        } catch (e) {
+          ok.disabled = false;
+          adminSay(`核准失敗（${errText(e)}）`, true);
+        }
+      });
+      const skip = linkButton("忽略", "danger", async () => {
+        skip.disabled = true;
+        try {
+          await deleteDoc(doc(db, "cert_radar_requests", r.id));
+          refreshAdmin();
+        } catch (e) {
+          skip.disabled = false;
+          adminSay(`操作失敗（${errText(e)}）`, true);
+        }
+      });
+      const who = r.name ? `<span class="sub">${h(r.name)}</span>` : "";
+      req.append(item(`<span class="em">${h(r.email)}${who}</span>`, [ok, skip]));
+    });
+  }
+
+  $("acl-add").addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const email = $("acl-email").value.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return adminSay("這不像一個 email", true);
+    if (members.includes(email)) return adminSay(`${email} 已經在名單裡`);
+    try {
+      await saveMembers([...members, email]);
+      $("acl-email").value = "";
+      adminSay(`已開通 ${email}`);
+      refreshAdmin();
+    } catch (e) {
+      adminSay(`加入失敗（${errText(e)}）`, true);
+    }
+  });
 </script>
 
 </body>
