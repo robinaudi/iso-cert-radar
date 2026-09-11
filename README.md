@@ -4,7 +4,7 @@ ISO 27001／27701／27017・27018／42001 與個資管理的**稽核員培訓開
 
 每天打開看一眼，別讓早鳥價和報名截止日溜掉。
 
-**線上版：** https://robinaudi.github.io/iso-cert-radar/
+**線上版：** https://robinaudi.github.io/iso-cert-radar/ （要用 Google 帳號登入，受邀成員才進得去；沒被授權的帳號可以在頁面上按「申請存取」）
 
 ---
 
