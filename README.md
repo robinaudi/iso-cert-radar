@@ -27,6 +27,7 @@ ISO 27001／27701／27017・27018／42001 與個資管理的**稽核員培訓開
 | | |
 | --- | --- |
 | **看課程** | 直接開 [線上版](https://robinaudi.github.io/iso-cert-radar/) |
+| **完全沒用過 Git/GitHub** | 讀 [ONBOARDING.md](ONBOARDING.md)，從零開始手把手教 |
 | **改資料 / 補一梯新的** | 讀 [CONTRIBUTING.md](CONTRIBUTING.md) |
 | **回報但不想自己改** | 開一個 [Issue](../../issues/new/choose) |
 
